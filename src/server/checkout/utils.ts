@@ -55,12 +55,22 @@ export async function getSession(sessionId: string) {
   }
 }
 
-
 export async function getSubscription(sessionId: string) {
   try {
     const subscription = await stripe.subscriptions.retrieve(sessionId);
 
     return subscription;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export async function getInvoice(sessionId: string) {
+  try {
+    const invoice = await stripe.invoices.retrieve(sessionId);
+
+    return invoice;
   } catch (err) {
     console.log(err);
     return null;

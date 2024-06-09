@@ -30,6 +30,8 @@ export default function Checkout({ params }: { params: { slug: string } }) {
 
         const cart = { ...statedCart, client_reference_id: userId };
 
+        console.log("cart", cart);
+
         const sessionId = await CreateSession(cart);
 
         return sessionId.clientSecret;

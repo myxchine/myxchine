@@ -1,4 +1,4 @@
-import SubscriptionCards from "@/components/home/SubscriptionCards";
+import SubscriptionCards from "@/components/SubscriptionCards";
 
 export default function HomePage() {
   return (
@@ -6,7 +6,7 @@ export default function HomePage() {
       <div className="w-full space-y-4 p-4 pr-8 text-left md:pr-0 md:text-center">
         <h1 className="w-full text-3xl font-bold md:text-5xl">Subscriptions</h1>
 
-        <p className="text-md text-black text-opacity-50">
+        <p className="text-md text-black text-opacity-80">
           A customizable subscription service from Duality to enhance your
           business model.
         </p>

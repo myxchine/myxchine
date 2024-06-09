@@ -77,14 +77,23 @@ const SubscriptionCards = () => {
           <div className="w-full space-y-8">
             <div className="space-y-4">
               <h2 className="text-2xl font-bold">STARTER</h2>
-              <p className="h-[50px]">
+              <p className="">
                 This is a starter plan to get you started for less.
               </p>
             </div>
-            <p className="text-5xl font-bold">
-              €{getPrice(5)}
-              <span className="text-xl">{getBillingPeriod()}</span>
-            </p>
+
+            <div className="space-y-2">
+              <p className="text-5xl font-bold">
+                €{getPrice(5)}
+                <span className="text-xl">{getBillingPeriod()}</span>
+              </p>
+              {billingType === "yearly" && (
+                <p className="text-xs text-gray-500">
+                  This plan is billed yearly
+                </p>
+              )}
+            </div>
+
             <button
               onClick={() => handleSubscribe({ value: 5, name: "starter" })}
               className="w-full rounded border border-black bg-black p-2 text-white hover:bg-transparent hover:text-black"
@@ -97,14 +106,23 @@ const SubscriptionCards = () => {
           <div className="w-full space-y-8">
             <div className="space-y-4">
               <h2 className="text-2xl font-bold">VALUE</h2>
-              <p className="h-[50px]">
+              <p className="">
                 This is a value plan for serious users looking for value.
               </p>
             </div>
-            <p className="text-5xl font-bold">
-              €{getPrice(15)}
-              <span className="text-xl">{getBillingPeriod()}</span>
-            </p>
+
+            <div className="space-y-2">
+              <p className="text-5xl font-bold">
+                €{getPrice(15)}
+                <span className="text-xl">{getBillingPeriod()}</span>
+              </p>
+              {billingType === "yearly" && (
+                <p className="text-xs text-gray-500">
+                  This plan is billed yearly
+                </p>
+              )}
+            </div>
+
             <button
               onClick={() => handleSubscribe({ value: 15, name: "value" })}
               className="w-full rounded border border-black bg-black p-2 text-white hover:bg-transparent hover:text-black"
@@ -117,14 +135,22 @@ const SubscriptionCards = () => {
           <div className="w-full space-y-8">
             <div className="space-y-4">
               <h2 className="text-2xl font-bold uppercase">professional</h2>
-              <p className="h-[50px] w-full">
+              <p className=" w-full">
                 This is a pro plan for advanced users looking for the best.
               </p>
             </div>
-            <p className="text-5xl font-bold">
-              €{getPrice(40)}
-              <span className="text-xl">{getBillingPeriod()}</span>
-            </p>
+            <div className="space-y-2">
+              <p className="text-5xl font-bold">
+                €{getPrice(40)}
+                <span className="text-xl">{getBillingPeriod()}</span>
+              </p>
+              {billingType === "yearly" && (
+                <p className="text-xs text-gray-500">
+                  This plan is billed yearly
+                </p>
+              )}
+            </div>
+
             <button
               onClick={() =>
                 handleSubscribe({ value: 40, name: "professional" })
