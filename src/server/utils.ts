@@ -301,3 +301,80 @@ export const createNewAlbum = async (album: any) => {
     throw error;
   }
 };
+
+export const createPlaylist = async (playlist: any) => {
+  try {
+    const { data: existingPlaylists, error: selectError } = await db
+      .from("playlists")
+      .select("*")
+      .eq("id", playlist.id);
+
+    if (selectError) {
+      console.error("Error checking for existing playlist:", selectError);
+      throw selectError;
+    }
+
+    if (existingPlaylists && existingPlaylists.length > 0) {
+      return existingPlaylists[0];
+    }
+
+    const { data: newPlaylist, error: insertError } = await db
+      .from("playlists")
+      .insert({
+        id: playlist.id,
+        name: playlist.name,
+        userId: playlist.userId,
+      })
+      .single(); // This will ensure we get the inserted record back
+
+    if (insertError) {
+      console.error("Error creating new playlist:", insertError);
+      throw insertError;
+    }
+
+    console.log("New playlist created:", newPlaylist);
+
+    return newPlaylist;
+  } catch (error) {
+    console.error("Error in createPlaylist:", error);
+    throw error;
+  }
+};
+
+export const addSongToPlaylist = async (playlistID: string, song: any) => {
+  try {
+    const { data: existingSongs, error: selectError } = await db
+      .from("songs")
+      .select("*")
+      .eq("id", song.id);
+
+    if (selectError) {
+      console.error("Error checking for existing song:", selectError);
+      throw selectError;
+    }
+
+    if (existingSongs && existingSongs.length > 0) {
+      return existingSongs[0];
+    }
+
+    const { data: newSong, error: insertError } = await db
+      .from("songs")
+      .insert({
+        id: song.id,
+        playlist_id: playlistID,
+      })
+      .single(); // This will ensure we get the inserted record back
+
+    if (insertError) {
+      console.error("Error adding song to playlist:", insertError);
+      throw insertError;
+    }
+
+    console.log("New song added to playlist:", newSong);
+
+    return newSong;
+  } catch (error) {
+    console.error("Error in addSongToPlaylist:", error);
+    throw error;
+  }
+};

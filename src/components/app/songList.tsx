@@ -41,14 +41,13 @@ const SongsList: React.FC<Props> = ({
   const [shuffledData, setShuffledData] = useState<Song[]>([]);
 
   useEffect(() => {
-    if (data) {
-      if (randomize) {
-        setShuffledData(shuffleArray(data));
-      } else {
-        setShuffledData(data);
-      }
+    if (data && randomize) {
+      setShuffledData(shuffleArray(data));
+    } else if (data && !shuffledData.length && !randomize) {
+      console.log("data", data);
+      setShuffledData(data);
     }
-  }, [data, randomize]);
+  }, [data, randomize]); // Add shuffledData.length as a dependency
 
   if (!data) {
     return (

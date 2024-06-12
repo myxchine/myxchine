@@ -12,7 +12,7 @@ const useAudioPlayer = (initialSongs = []) => {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    if (audioRef.current) {
+    if (audioRef.current && queue.length > 0) {
       const audio = new Audio(queue[currentIndex]?.url || "");
       audioRef.current = audio;
 

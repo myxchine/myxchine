@@ -6,7 +6,7 @@ const FooterNav = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="items-center justify-between sticky left-0 top-0 flex w-full space-x-0 bg-white p-4 text-sm">
+    <nav className="items-center justify-between sticky left-0 top-0 flex w-full space-x-0 bg-white p-4 text-sm z-10000000">
       <Link href="/app/home/" passHref>
         <div
           className={`text-gray flex w-full cursor-pointer flex-col items-center rounded-md border font-bold ${

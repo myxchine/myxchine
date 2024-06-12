@@ -1,12 +1,13 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { useSearchParams } from "next/navigation";
 import { useMusic } from "@/app/app/context";
 import { getAlbumSongs } from "@/server/utils";
 import SongList from "@/components/app/songList";
-
 import Image from "next/image";
+
+export const dynamic = "force-dynamic";
 
 const AlbumSongs = () => {
   const searchParams = useSearchParams();
@@ -33,8 +34,6 @@ const AlbumSongs = () => {
     if (albumId) {
       const fetchSongs = async () => {
         const songs = await getAlbumSongs(albumId);
-
-        console.log(songs);
         setSongs(songs);
       };
       fetchSongs();
