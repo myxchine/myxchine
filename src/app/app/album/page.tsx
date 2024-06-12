@@ -81,6 +81,10 @@ const AlbumSongs = () => {
         data={songs.data}
         setSong={handleSetQueue}
         addToQueue={addToQueue}
+        limit={10}
+        randomize={false}
+        headerText=""
+        showImage={false}
       />
     </div>
   );

@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { createPlaylist } from "@/server/utils";
 import { IoMdAdd } from "react-icons/io";
+import { useAuth } from "@/app/context";
 
 interface Playlist {
   id: string;
@@ -17,28 +18,20 @@ interface Props {
 }
 const Home: React.FC<Props> = ({ data }) => {
   const handleCreatePlaylist = async (name: string) => {
-    const newPlaylist = await createNewPlaylist({
-      songs: [],
-      metadata: {
-        timestamp: "date",
-        createdBy: userData?.uid,
-        playlist: name,
-        artwork: [
-          {
-            src: "https://utfs.io/f/8de7c020-714f-44f1-815e-4bab0af6dd2a-pjqibl.png",
-            sizes: "512x512",
-            type: "image/png",
-          },
-        ],
-      },
-    });
-    console.log("new playlist", newPlaylist);
+    if (user && session) {
+      const newPlaylist = await createPlaylist({
+        songs: [],
+        name: name,
+        userId: user.id,
+      });
+      console.log("new playlist", newPlaylist);
+    }
     setAdding(false);
   };
 
   const [adding, setAdding] = useState<boolean>(false);
   const [name, setName] = useState("");
-
+  const { user, session } = useAuth();
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     handleCreatePlaylist(name);
