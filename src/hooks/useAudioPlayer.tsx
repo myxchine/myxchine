@@ -8,11 +8,12 @@ const useAudioPlayer = (initialSongs = []) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [live, setLive] = useState(false);
+  const [songLoading, setSongLoading] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
     if (audioRef.current && queue.length > 0) {
+      setSongLoading(true);
       const audio = new Audio(queue[currentIndex]?.url || "");
       audioRef.current = audio;
 
@@ -27,8 +28,8 @@ const useAudioPlayer = (initialSongs = []) => {
         .play()
         .then(() => {
           console.log(queue[currentIndex]);
-          setLive(true);
           setIsPlaying(true);
+          setSongLoading(false);
         })
         .catch((error) => {
           console.error("Error playing audio:", error);
@@ -75,7 +76,7 @@ const useAudioPlayer = (initialSongs = []) => {
     currentIndex,
     isPlaying,
     currentTime,
-    live,
+    songLoading,
     duration,
     queue,
     play,

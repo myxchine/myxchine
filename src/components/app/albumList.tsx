@@ -1,7 +1,5 @@
-"use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 interface Album {
   id: string;
   name: string;
@@ -16,31 +14,12 @@ interface Props {
   randomize: boolean; // Add new prop for randomizing
 }
 
-const shuffleArray = (array: any[]) => {
-  return array
-    .map((value) => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
-};
-
 const Home: React.FC<Props> = ({
   data,
   limit,
   headerText,
   randomize, // Destructure the new prop
 }) => {
-  const [shuffledData, setShuffledData] = useState<Album[]>([]);
-
-  useEffect(() => {
-    if (data) {
-      if (randomize) {
-        setShuffledData(shuffleArray(data.data));
-      } else {
-        setShuffledData(data.data);
-      }
-    }
-  }, [data, randomize]);
-
   if (!data) {
     return (
       <div className="mb-0">
@@ -77,7 +56,7 @@ const Home: React.FC<Props> = ({
     <div className="mb-0">
       <h2 className="text-l pl-4 font-bold text-grey">Recently Added</h2>
       <div className="grid grid-cols-2 gap-4 p-4">
-        {shuffledData.slice(0, limit).map((album: Album, index: number) => (
+        {data.data.slice(0, limit).map((album: Album, index: number) => (
           <div key={index} className="col-2 ">
             <Link href={`/app/album?a=${album.id}`}>
               <div className=" w-full cursor-pointer items-center text-left">

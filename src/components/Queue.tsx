@@ -16,7 +16,7 @@ const SongsComponent: React.FC<Props> = ({ songs }) => {
               <img
                 className="rounded-xl"
                 width={60}
-                src={song.album.images[0].url}
+                src={song.images[0].url}
                 alt={`${song.name} - Album Cover`}
               />
             </div>
@@ -35,8 +35,8 @@ const SongsComponent: React.FC<Props> = ({ songs }) => {
                   maxWidth: "200px",
                 }}
               >
-                {song.album.artists.map((artist) => artist.name).join(", ")} -{" "}
-                {song.album.name}
+                {song.artists.map((artist) => artist.name).join(", ")} -{" "}
+                {song.albumName}
               </p>
             </div>
           </div>

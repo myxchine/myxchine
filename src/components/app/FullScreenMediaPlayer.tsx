@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from "react";
+"use client";
+
 import {
   IoMdPlay,
   IoMdPause,
@@ -8,60 +9,31 @@ import {
 import { IoChevronBackOutline } from "react-icons/io5";
 import MyLoader from "@/components/ui/Loader";
 import Queue from "@/components/Queue";
+import { useMusic } from "@/app/app/context";
 
-interface MediaImage {
-  src: string;
-  sizes: string;
-  type: string;
-}
+import { useEffect, useRef, useState } from "react";
 
-interface Song {
-  url: string;
-  metadata: {
-    title: string;
-    artist: string;
-    album: string;
-    artwork: Array<MediaImage>;
-  };
-}
-
-interface FullScreenMediaPlayerProps {
-  currentSong: Song;
-  isPlaying: boolean;
-  currentTime: number;
-  duration: number;
-  songLoading: boolean;
-  timeRemaining: number;
-  prominentColour: string;
-  queue: Song[];
-  onClose: () => void;
-  onPlayPause: () => void;
-  setCurrentTime: (newTime: number) => void;
-  onNext: () => void;
-  onPrevious: () => void;
-  changeSongPoint: (newPointInSeconds: number) => void;
-  changeBackgroundColor: () => void;
-}
-
-const FullScreenMediaPlayer: React.FC<FullScreenMediaPlayerProps> = ({
-  currentSong,
-  isPlaying,
-  currentTime,
-  timeRemaining, // Include timeRemaining here
-  duration,
-  prominentColour,
-  songLoading,
-  queue,
-  onClose,
-  setCurrentTime,
-  onPlayPause,
-  onNext,
-  onPrevious,
-  changeBackgroundColor,
-  changeSongPoint,
-}) => {
+const FullScreenMediaPlayer = () => {
   const [dragging, setDragging] = useState(false);
   const progressBarRef = useRef<HTMLDivElement>(null);
+
+  const {
+    currentIndex,
+    isPlaying,
+    currentTime,
+    duration,
+    songLoading,
+    queue,
+    closeFullscreen,
+    setCurrentTime,
+    isFullScreen,
+    play,
+    pause,
+    next,
+    prev,
+    changeBackgroundColor,
+    changeSongPoint,
+  } = useMusic();
 
   const onStartDrag = () => {
     setDragging(true);
@@ -105,26 +77,20 @@ const FullScreenMediaPlayer: React.FC<FullScreenMediaPlayerProps> = ({
     left: `${(currentTime / duration) * 100}%`,
   };
 
-  return (
-    <div
-      className="pointer-events-auto"
-      style={{
-        backgroundColor: prominentColour,
-        transition: "background 2s ease",
-      }}
-    >
+  if (isFullScreen) {
+    return (
       <div
-        className="z-1000000 h-screen"
+        className="fixed top-0 left-0 w-full z-10000000000"
         style={{
-          // background: `radial-gradient(circle 1500px at 50% 30%, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 30%, rgba(0, 0, 0, 0.6) 100%)`,
-          background: `radial-gradient(circle 1500px at 50% 30%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 100%)`,
+          backgroundColor: queue[currentIndex].colour,
+          transition: "background 2s ease",
         }}
       >
         <div className="left-0 top-0 flex items-center p-2">
           <button
             style={{ transform: "rotate(-90deg)" }}
             className="pb-0 pr-4 pt-2 text-3xl text-white"
-            onClick={() => onClose()}
+            onClick={() => closeFullscreen()}
           >
             <IoChevronBackOutline />
           </button>
@@ -135,8 +101,8 @@ const FullScreenMediaPlayer: React.FC<FullScreenMediaPlayerProps> = ({
               <img
                 className="rounded-xl"
                 width={"max"}
-                src={currentSong.album.images[0].url}
-                alt={`${currentSong.name} - Album Cover`}
+                src={queue[currentIndex].images[0].url}
+                alt={`${queue[currentIndex].name} - Album Cover`}
               />
             </div>
 
@@ -145,13 +111,13 @@ const FullScreenMediaPlayer: React.FC<FullScreenMediaPlayerProps> = ({
                 className="truncate text-2xl font-bold text-white"
                 style={{ maxWidth: "300px" }}
               >
-                {currentSong.name}
+                {queue[currentIndex].name}
               </h2>
               <h3
                 className="truncate text-xl text-white text-opacity-60"
                 style={{ maxWidth: "250px" }}
               >
-                {currentSong.album.artists
+                {queue[currentIndex].artists
                   .map((artist: any) => artist.name)
                   .join(", ")}
               </h3>
@@ -171,12 +137,8 @@ const FullScreenMediaPlayer: React.FC<FullScreenMediaPlayerProps> = ({
                 style={circleStyle}
               ></div>
             </div>
-            <div className="text-3xl text-black">{timeRemaining}</div>
             <div className="flex items-center justify-between space-x-8 py-4 text-white">
-              <button
-                className="rounded text-4xl"
-                onClick={() => onPrevious(currentSong)}
-              >
+              <button className="rounded text-4xl" onClick={() => prev()}>
                 <IoMdSkipBackward />
               </button>
               {songLoading && (
@@ -191,15 +153,12 @@ const FullScreenMediaPlayer: React.FC<FullScreenMediaPlayerProps> = ({
               {!songLoading && (
                 <button
                   className={`rounded text-5xl ${!songLoading ? "show" : ""}`}
-                  onClick={onPlayPause}
+                  onClick={isPlaying ? pause : play}
                 >
                   {isPlaying ? <IoMdPause /> : <IoMdPlay />}
                 </button>
               )}
-              <button
-                className="rounded text-4xl"
-                onClick={() => onNext(currentSong)}
-              >
+              <button className="rounded text-4xl" onClick={() => next()}>
                 <IoMdSkipForward />
               </button>
             </div>
@@ -207,8 +166,8 @@ const FullScreenMediaPlayer: React.FC<FullScreenMediaPlayerProps> = ({
           {queue.length > 0 && <Queue songs={queue} />}
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default FullScreenMediaPlayer;

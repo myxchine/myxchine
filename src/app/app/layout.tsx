@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@/styles/globals.css";
 import { MusicProvider } from "./context";
 import MediaPlayer from "@/components/app/mediaplayer";
+import FullScreenMediaPlayer from "@/components/app/FullScreenMediaPlayer";
 import Footer from "@/components/app/FooterNav";
 import { AuthProvider } from "@/app/context";
 
@@ -23,6 +24,7 @@ export default function RootLayout({
           <MediaPlayer />
           <Footer />
         </div>
+        <FullScreenMediaPlayer />
       </MusicProvider>
     </AuthProvider>
   );

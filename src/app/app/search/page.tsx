@@ -19,9 +19,9 @@ const SongSuggest = () => {
 
   const router = useRouter();
 
-  const { setQueue, setCurrentIndex } = useMusic();
+  const { getClientAlbums } = useMusic();
 
-  const handleSongSelect = async (song) => {
+  const handleSongSelect = async (song: any) => {
     console.log(song);
 
     const userConfirmed = confirm(
@@ -52,16 +52,16 @@ const SongSuggest = () => {
         console.log;
 
         const newAlbum = await createNewAlbum(song.album);
+
         console.log(newAlbum);
 
         const newSong = await createNewSong(song, url);
 
         console.log(newSong);
 
-        setQueue([newSong]);
-        setCurrentIndex(0);
+        const fetchNew = getClientAlbums(10);
 
-        router.push("/app/home");
+        router.push(`/app/album?a=${song.album.id}`);
       } catch (error) {
         console.error(error);
         setIsDownloading(false);

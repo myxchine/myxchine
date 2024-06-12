@@ -50,7 +50,7 @@ const AlbumSongs = () => {
     return <div>Loading...</div>;
   }
 
-  const handleSetQueue = (newQueue) => {
+  const handleSetQueue = (newQueue: any) => {
     setQueue([newQueue]);
     setCurrentIndex(0);
   };

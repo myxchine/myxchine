@@ -1,6 +1,5 @@
 import { IoMdAdd } from "react-icons/io";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 
 interface Song {
   id: string;
@@ -21,14 +20,6 @@ interface Props {
   randomize: boolean; // Add new prop for randomizing
 }
 
-// Function to shuffle an array
-const shuffleArray = (array: any[]) => {
-  return array
-    .map((value) => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
-};
-
 const SongsList: React.FC<Props> = ({
   data = [],
   limit,
@@ -38,17 +29,6 @@ const SongsList: React.FC<Props> = ({
   showImage,
   randomize, // Destructure the new prop
 }) => {
-  const [shuffledData, setShuffledData] = useState<Song[]>([]);
-
-  useEffect(() => {
-    if (data && randomize) {
-      setShuffledData(shuffleArray(data));
-    } else if (data && !shuffledData.length && !randomize) {
-      console.log("data", data);
-      setShuffledData(data);
-    }
-  }, [data, randomize]); // Add shuffledData.length as a dependency
-
   if (!data) {
     return (
       <div className="mb-56 bg-transparent p-4 pt-0">
@@ -91,7 +71,7 @@ const SongsList: React.FC<Props> = ({
       <h2 className="text-l font-bold text-grey">{headerText}</h2>
 
       <div className="space-y-4 py-4">
-        {shuffledData.slice(0, limit).map((song, index) => (
+        {data.slice(0, limit).map((song, index) => (
           <div
             key={index}
             className="cursor-pointer"

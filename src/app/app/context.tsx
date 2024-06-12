@@ -11,12 +11,16 @@ interface MusicContextType {
   currentTime: number;
   duration: number;
   currentIndex: number;
-  live: boolean;
   isPlaying: boolean;
+  isFullScreen: boolean;
+  songLoading: boolean;
+  openFullscreen: () => void;
+  closeFullscreen: () => void;
   play: () => void;
   pause: () => void;
   next: () => void;
   prev: () => void;
+  getClientAlbums: (limit: number) => void;
   addToQueue: (song: any) => void;
   setQueue: (songs: any[]) => void;
   setCurrentIndex: (index: number) => void;
@@ -33,14 +37,16 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
     albums: null,
     playlists: null,
   });
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   const {
     currentIndex,
-    live,
     queue,
+    songLoading,
     isPlaying,
     currentTime,
     duration,
+
     play,
     pause,
     next,
@@ -82,6 +88,23 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
     setQueue((prevQueue) => [...prevQueue, song]);
   };
 
+  const getClientAlbums = async (limit: number) => {
+    const data = await getAlbums(limit);
+
+    setMusicData((prev) => ({ ...prev, albums: data }));
+  };
+
+  const openFullscreen = () => {
+    console.log("open fullscreen");
+    setIsFullScreen(true);
+    console.log("isFullScreen", isFullScreen);
+  };
+
+  const closeFullscreen = () => {
+    console.log("close fullscreen");
+    setIsFullScreen(false);
+  };
+
   return (
     <MusicContext.Provider
       value={{
@@ -91,12 +114,16 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
         currentIndex,
         queue,
         isPlaying,
-        live,
+        isFullScreen,
+        songLoading,
         play,
         pause,
         next,
+        openFullscreen,
+        closeFullscreen,
         prev,
         setQueue,
+        getClientAlbums,
         addToQueue,
         setCurrentIndex,
         audioRef,

@@ -11,12 +11,12 @@ const MediaPlayer = () => {
     queue,
     currentIndex,
     isPlaying,
-    live,
     play,
     pause,
     currentTime,
     duration,
-    toggleFullScreen,
+    openFullscreen,
+    isFullScreen,
     songLoading,
   } = useMusic();
 
@@ -24,7 +24,7 @@ const MediaPlayer = () => {
     width: `${(currentTime / duration) * 100}%`,
   };
 
-  if (queue[currentIndex]) {
+  if (queue[currentIndex] && !isFullScreen) {
     return (
       <>
         <div className="w-full">
@@ -42,7 +42,7 @@ const MediaPlayer = () => {
                 <div className="flex flex w-full items-center justify-between space-x-3 py-2">
                   <div>
                     <Image
-                      onClick={toggleFullScreen}
+                      onClick={openFullscreen}
                       className="rounded-lg w-[60px]"
                       priority={true}
                       width={100}
@@ -54,7 +54,7 @@ const MediaPlayer = () => {
                   <div className="w-full">
                     <div className="flex h-full items-center align-middle">
                       <div
-                        onClick={toggleFullScreen}
+                        onClick={openFullscreen}
                         className="w-full text-left"
                       >
                         <div>
