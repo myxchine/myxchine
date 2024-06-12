@@ -11,6 +11,30 @@ const useAudioPlayer = (initialSongs = []) => {
   const [songLoading, setSongLoading] = useState(false);
   const audioRef = useRef(null);
 
+  const setMediaSession = (song) => {
+    console.log("Setting media session for song:", song);
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new window.MediaMetadata({
+        title: song.name,
+        artist: song.artists.map((artist) => artist.name).join(", "),
+        album: song.album, // Assuming album is an object with a name property
+        artwork: [
+          {
+            src: song.images[0].url, // Adjusting to the correct path for image URL
+            sizes: "512x512",
+            type: "image/png",
+          },
+        ],
+      });
+
+      // Set action handlers
+      navigator.mediaSession.setActionHandler("play", play);
+      navigator.mediaSession.setActionHandler("pause", pause);
+      navigator.mediaSession.setActionHandler("previoustrack", prev);
+      navigator.mediaSession.setActionHandler("nexttrack", next);
+    }
+  };
+
   useEffect(() => {
     if (audioRef.current && queue.length > 0) {
       setSongLoading(true);
@@ -27,9 +51,9 @@ const useAudioPlayer = (initialSongs = []) => {
       audio
         .play()
         .then(() => {
-          console.log(queue[currentIndex]);
           setIsPlaying(true);
           setSongLoading(false);
+          setMediaSession(queue[currentIndex]);
         })
         .catch((error) => {
           console.error("Error playing audio:", error);

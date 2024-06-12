@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { getSongs, getAlbums, getPlaylists } from "@/server/utils";
 import useAudioPlayer from "@/hooks/useAudioPlayer";
 import { useAuth } from "@/app/context";
+import MediaSessionHandler from "@/components/MediaSessionHandler";
 
 interface MusicContextType {
   musicData: any;
@@ -85,10 +86,16 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
   }, [user, session]);
 
   useEffect(() => {
-    if (queue.length > 0 && isFullScreen) {
+    if (isFullScreen) {
       document
         .querySelector('meta[name="theme-color"]')
         .setAttribute("content", queue[currentIndex].colour);
+    }
+
+    if (!isFullScreen) {
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute("content", "#FFF");
     }
   }, [currentIndex, queue, isFullScreen]);
 
@@ -139,6 +146,12 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
     >
       {children}
       <audio ref={audioRef} />
+      <MediaSessionHandler
+        onPlay={play}
+        onPause={pause}
+        onNext={next}
+        onPrevious={prev}
+      />
     </MusicContext.Provider>
   );
 };
