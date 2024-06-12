@@ -7,7 +7,13 @@ import { getAlbumSongs } from "@/server/utils";
 import SongList from "@/components/app/songList";
 import Image from "next/image";
 
-export const dynamic = "force-dynamic";
+const AlbumSongsWrapper = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AlbumSongs />
+    </Suspense>
+  );
+};
 
 const AlbumSongs = () => {
   const searchParams = useSearchParams();
@@ -89,4 +95,4 @@ const AlbumSongs = () => {
   );
 };
 
-export default AlbumSongs;
+export default AlbumSongsWrapper;

@@ -28,7 +28,7 @@ const MediaPlayer = () => {
     return (
       <>
         <div className="w-full">
-          <div className="p-2">
+          <div className="px-2">
             <div
               className="rounded-lg"
               style={{
