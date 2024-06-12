@@ -3,9 +3,11 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { db } from "@/server/db";
 
+export const dynamic = "force-dynamic";
 interface AuthContextType {
   user: any;
   session: any;
+  isSignedIn: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -13,6 +15,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState(null);
   const [session, setSession] = useState(null);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  
 
   useEffect(() => {
     const { data } = db.auth.onAuthStateChange((event, session) => {
@@ -20,6 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(session.user);
         setSession(session);
         console.log("User signed in:", session);
+        setIsSignedIn(true);
       } else if (event === "SIGNED_OUT") {
         setUser(null);
         setSession(null);
@@ -34,7 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, session }}>
+    <AuthContext.Provider value={{ user, session, isSignedIn }}>
       {children}
     </AuthContext.Provider>
   );
