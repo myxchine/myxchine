@@ -69,12 +69,12 @@ const SongsList: React.FC<Props> = ({
                   >
                     <div className="h-4 bg-gray-200 animate-pulse" />
                   </h2>
-                  <p
+                  <div
                     className="truncate text-xs text-grey mt-2"
                     style={{ maxWidth: "150px" }}
                   >
                     <div className="h-4 bg-gray-200 animate-pulse" />
-                  </p>
+                  </div>
                 </div>
                 <button className="bg-red text-2xl text-grey focus:text-black active:text-black">
                   <IoMdAdd />

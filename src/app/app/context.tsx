@@ -26,13 +26,13 @@ interface MusicContextType {
 const MusicContext = createContext<MusicContextType | undefined>(undefined);
 
 export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
+  const { user, session } = useAuth();
+
   const [musicData, setMusicData] = useState({
     songs: null,
     albums: null,
     playlists: null,
   });
-
-  const { user, session } = useAuth();
 
   const {
     currentIndex,

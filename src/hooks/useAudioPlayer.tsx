@@ -6,56 +6,39 @@ const useAudioPlayer = (initialSongs = []) => {
   const [queue, setQueue] = useState(initialSongs);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0); // Added state for current time
-  const [duration, setDuration] = useState(0); // Added state for audio duration
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [live, setLive] = useState(false);
-
-  const audioRef = useRef(new Audio(queue[0]?.url));
+  const audioRef = useRef(null);
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.src = queue[currentIndex]?.url || "";
-    }
-  }, [currentIndex, queue]); // Removed isPlaying from dependencies to prevent unnecessary resets
+      const audio = new Audio(queue[currentIndex]?.url || "");
+      audioRef.current = audio;
 
-  useEffect(() => {
-    const handleTimeUpdate = () => {
-      if (audioRef.current) {
-        setCurrentTime(audioRef.current.currentTime);
-        setDuration(audioRef.current.duration);
-      }
-    };
+      const handleTimeUpdate = () => {
+        setCurrentTime(audio.currentTime);
+        setDuration(audio.duration);
+      };
 
-    if (audioRef.current) {
-      audioRef.current.addEventListener("timeupdate", handleTimeUpdate);
+      audio.addEventListener("timeupdate", handleTimeUpdate);
+
+      audio
+        .play()
+        .then(() => {
+          console.log(queue[currentIndex]);
+          setLive(true);
+          setIsPlaying(true);
+        })
+        .catch((error) => {
+          console.error("Error playing audio:", error);
+        });
+
       return () => {
-        if (audioRef.current) {
-          audioRef.current.removeEventListener("timeupdate", handleTimeUpdate);
-        }
+        audio.pause();
+        audio.removeEventListener("timeupdate", handleTimeUpdate);
       };
     }
-  }, []);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    audio.pause();
-    audio.src = queue[currentIndex]?.url || "";
-    audio
-      .play()
-      .then(() => {
-        // Audio playback has started
-        console.log(queue[currentIndex]);
-        setLive(true);
-        setIsPlaying(true);
-      })
-      .catch((error) => {
-        console.error("Error playing audio:", error);
-      });
-
-    return () => {
-      audio.pause(); // Pause the audio when the component unmounts or this effect runs again
-    };
   }, [queue, currentIndex]);
 
   const play = () => {

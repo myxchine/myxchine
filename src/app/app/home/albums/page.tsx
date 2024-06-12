@@ -7,7 +7,12 @@ const Home = () => {
 
   return (
     <main>
-      <AlbumList data={musicData.albums} limit={6} />
+      <AlbumList
+        data={musicData.albums}
+        limit={6}
+        headerText="Recently Added"
+        randomize={false}
+      />
     </main>
   );
 };
