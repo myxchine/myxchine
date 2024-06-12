@@ -10,7 +10,7 @@ import { IoChevronBackOutline } from "react-icons/io5";
 import MyLoader from "@/components/ui/Loader";
 import Queue from "@/components/Queue";
 import { useMusic } from "@/app/app/context";
-
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const FullScreenMediaPlayer = () => {
@@ -98,9 +98,11 @@ const FullScreenMediaPlayer = () => {
         <div className="max-h-screen w-full overflow-y-auto rounded-xl bg-opacity-0 p-4 pb-40">
           <div className="flex flex-col items-center space-y-4 bg-opacity-0">
             <div className="mb-4 bg-opacity-0">
-              <img
-                className="rounded-xl"
-                width={"max"}
+              <Image
+                className="rounded w-full h-auto "
+                width={500}
+                height={500}
+                priority
                 src={queue[currentIndex].images[0].url}
                 alt={`${queue[currentIndex].name} - Album Cover`}
               />

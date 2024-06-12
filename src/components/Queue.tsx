@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const SongsComponent: React.FC<Props> = ({ songs }) => {
   const handleClick = (song: Song) => {
     console.log("Clicked", song);
@@ -13,9 +15,10 @@ const SongsComponent: React.FC<Props> = ({ songs }) => {
             onClick={() => handleClick(song)}
           >
             <div>
-              <img
-                className="rounded-xl"
-                width={60}
+              <Image
+                className="rounded w-[70px]"
+                width={200}
+                height={200}
                 src={song.images[0].url}
                 alt={`${song.name} - Album Cover`}
               />
