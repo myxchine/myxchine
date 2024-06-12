@@ -1,14 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { SubmitButton } from "@/components/home/submit-button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { db } from "@/server/db";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 const SignUp = () => {
   const [name, setName] = useState("");
-  const [businessName, setBusinessName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,7 +17,7 @@ const SignUp = () => {
     e.preventDefault();
 
     try {
-      if (!name || !businessName || !email || !password) {
+      if (!name || !email || !password) {
         setError("All fields are required");
         return;
       }
@@ -29,8 +28,6 @@ const SignUp = () => {
         options: {
           data: {
             name: name,
-            businessName: businessName,
-            currentPlan: "none",
           },
         },
       });
@@ -39,6 +36,7 @@ const SignUp = () => {
         setError(error.message);
       } else {
         console.log("User signed up:", data);
+
         router.push("/");
       }
     } catch (error) {
@@ -48,7 +46,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex w-full items-center justify-center p-8 pb-[100px] md:pb-[200px] md:pt-[100px]">
+    <div className="flex w-full items-center justify-center p-8 pb-[100px] md:pb-[200px] md:pt-[100px] min-h-screen">
       <div className="z-10 w-full max-w-md overflow-hidden rounded-2xl border shadow-md">
         <div className="flex flex-col items-center justify-center space-y-3 px-4 py-6 pt-8 text-center sm:px-16">
           <h3 className="text-xl font-semibold">Sign Up</h3>
@@ -76,25 +74,7 @@ const SignUp = () => {
               className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
             />
           </div>
-          <div>
-            <label
-              htmlFor="businessName"
-              className="block text-xs uppercase text-gray-600"
-            >
-              Business Name
-            </label>
-            <input
-              id="businessName"
-              name="businessName"
-              type="text"
-              placeholder="ABC Company"
-              autoComplete="organization"
-              onChange={(e) => setBusinessName(e.target.value)}
-              value={businessName}
-              required
-              className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
-            />
-          </div>
+
           <div>
             <label
               htmlFor="email"

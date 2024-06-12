@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { SubmitButton } from "@/components/home/submit-button";
+import { SubmitButton } from "@/components/ui/submit-button";
 import { db } from "@/server/db";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -31,7 +31,7 @@ const SignIn = () => {
   };
 
   return (
-    <div className="flex w-full items-center justify-center p-8 pb-[100px] md:pb-[200px] md:pt-[100px]">
+    <div className="flex w-full items-center justify-center p-8 pb-[100px] md:pb-[200px] md:pt-[100px] min-h-screen">
       <div className="z-10 w-full max-w-md overflow-hidden rounded-2xl border shadow-md">
         <div className="flex flex-col items-center justify-center space-y-3 px-4 py-6 pt-8 text-center sm:px-16">
           <h3 className="text-xl font-semibold">Sign In</h3>

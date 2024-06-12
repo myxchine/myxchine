@@ -6,6 +6,9 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    domains: ["i.scdn.co"],
+  },
 };
 
 export default nextConfig;
