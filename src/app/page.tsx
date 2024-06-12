@@ -8,5 +8,7 @@ export default function Purgatory() {
 
   if (user?.aud === "authenticated") {
     redirect("/app");
+  } else {
+    redirect("/signin");
   }
 }
