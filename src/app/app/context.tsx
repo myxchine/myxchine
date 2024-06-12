@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { getSongs, getAlbums, getPlaylists } from "@/server/utils";
 import useAudioPlayer from "@/hooks/useAudioPlayer";
 import { useAuth } from "@/app/context";
+import { use } from "node-vibrant";
 
 interface MusicContextType {
   musicData: any;
@@ -83,6 +84,14 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
         });
     }
   }, [user, session]);
+
+  useEffect(() => {
+    if (queue.length > 0) {
+      document
+        .querySelector('meta[name="theme-color"]')
+        .setAttribute("content", queue[currentIndex].colour);
+    }
+  }, [currentIndex, queue]);
 
   const addToQueue = (song) => {
     setQueue((prevQueue) => [...prevQueue, song]);
