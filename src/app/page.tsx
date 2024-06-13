@@ -17,7 +17,7 @@ export default function Purgatory() {
       }
 
       if (user.aud === "authenticated") {
-        router.push("/app");
+        router.push("/app/home");
       } else {
         router.push("/signin");
       }
