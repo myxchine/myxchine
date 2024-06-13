@@ -4,7 +4,14 @@ import SongsList from "@/components/app/songList";
 import AlbumList from "@/components/app/albumList";
 
 const Home = () => {
-  const { musicData, setQueue, setCurrentIndex, addToQueue } = useMusic();
+  const {
+    musicData,
+    setQueue,
+    setCurrentIndex,
+    addToQueue,
+    randomAlbums,
+    randomSongs,
+  } = useMusic();
 
   const handleSetQueue = (newQueue) => {
     setQueue([newQueue]);
@@ -14,14 +21,14 @@ const Home = () => {
   return (
     <main>
       <AlbumList
-        data={musicData.albums}
+        data={randomAlbums}
         limit={2}
         headerText="Recently Added"
         randomize={true}
       />
 
       <SongsList
-        data={musicData.songs}
+        data={randomSongs}
         setSong={handleSetQueue}
         addToQueue={addToQueue}
         limit={5}

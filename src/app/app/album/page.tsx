@@ -29,7 +29,7 @@ const AlbumSongs = () => {
 
   useEffect(() => {
     if (musicData && musicData.albums) {
-      const fetchedAlbum = musicData.albums.data.find(
+      const fetchedAlbum = musicData.albums.find(
         (album) => album.id === albumId
       );
       setAlbum(fetchedAlbum);

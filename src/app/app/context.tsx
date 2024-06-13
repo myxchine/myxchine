@@ -15,6 +15,8 @@ interface MusicContextType {
   isPlaying: boolean;
   isFullScreen: boolean;
   songLoading: boolean;
+  randomSongs: any[]; // Added randomSongs state
+  randomAlbums: any[]; // Added randomAlbums state
   openFullscreen: () => void;
   closeFullscreen: () => void;
   play: () => void;
@@ -39,6 +41,8 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
     playlists: null,
   });
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [randomSongs, setRandomSongs] = useState([]); // State for randomSongs
+  const [randomAlbums, setRandomAlbums] = useState([]); // State for randomAlbums
 
   const {
     currentIndex,
@@ -47,7 +51,6 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
     isPlaying,
     currentTime,
     duration,
-
     play,
     pause,
     next,
@@ -62,6 +65,9 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
       getSongs(10)
         .then((data) => {
           setMusicData((prev) => ({ ...prev, songs: data.data }));
+          setRandomSongs(
+            data.data.sort(() => 0.5 - Math.random()).slice(0, 10)
+          ); // Set random songs
         })
         .catch((error) => {
           console.error("Error fetching songs:", error);
@@ -69,7 +75,10 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
 
       getAlbums(10)
         .then((data) => {
-          setMusicData((prev) => ({ ...prev, albums: data }));
+          setMusicData((prev) => ({ ...prev, albums: data.data }));
+          setRandomAlbums(
+            data.data.sort(() => 0.5 - Math.random()).slice(0, 10)
+          ); // Set random albums
         })
         .catch((error) => {
           console.error("Error fetching albums:", error);
@@ -89,7 +98,7 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
     if (isFullScreen) {
       document
         .querySelector('meta[name="theme-color"]')
-        .setAttribute("content", queue[currentIndex].colour);
+        .setAttribute("content", queue[currentIndex]?.colour);
     }
 
     if (!isFullScreen) {
@@ -105,18 +114,14 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
 
   const getClientAlbums = async (limit: number) => {
     const data = await getAlbums(limit);
-
     setMusicData((prev) => ({ ...prev, albums: data }));
   };
 
   const openFullscreen = () => {
-    console.log("open fullscreen");
     setIsFullScreen(true);
-    console.log("isFullScreen", isFullScreen);
   };
 
   const closeFullscreen = () => {
-    console.log("close fullscreen");
     setIsFullScreen(false);
   };
 
@@ -131,6 +136,8 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
         isPlaying,
         isFullScreen,
         songLoading,
+        randomSongs, // Providing randomSongs state
+        randomAlbums, // Providing randomAlbums state
         play,
         pause,
         next,

@@ -11,16 +11,10 @@ interface Props {
   data: Album[];
   limit: number;
   headerText: string;
-  randomize: boolean; // Add new prop for randomizing
 }
 
-const Home: React.FC<Props> = ({
-  data,
-  limit,
-  headerText,
-  randomize, // Destructure the new prop
-}) => {
-  if (!data) {
+const Home: React.FC<Props> = ({ data, limit, headerText }) => {
+  if (!data || data.length === 0) {
     return (
       <div className="mb-0">
         <h2 className="text-l pl-4 font-bold text-grey">{headerText}</h2>
@@ -29,7 +23,7 @@ const Home: React.FC<Props> = ({
             <div key={index} className="col-2">
               <div className="w-full cursor-pointer items-center text-left">
                 <div
-                  className="w-full rounded-xl border bg-gray-200 animate-pulse"
+                  className="w-full rounded-md border bg-gray-200 animate-pulse"
                   style={{ height: 171, width: 171 }}
                 />
                 <h2
@@ -56,12 +50,12 @@ const Home: React.FC<Props> = ({
     <div className="mb-0">
       <h2 className="text-l pl-4 font-bold text-grey">Recently Added</h2>
       <div className="grid grid-cols-2 gap-4 p-4">
-        {data.data.slice(0, limit).map((album: Album, index: number) => (
+        {data.slice(0, limit).map((album: Album, index: number) => (
           <div key={index} className="col-2 ">
             <Link href={`/app/album?a=${album.id}`}>
               <div className=" w-full cursor-pointer items-center text-left">
                 <Image
-                  className="w-full rounded-xl border"
+                  className="w-full rounded-md border"
                   width={200}
                   height={200}
                   src={album.images[0].url}

@@ -11,7 +11,6 @@ const Home = () => {
         data={musicData.albums}
         limit={6}
         headerText="Recently Added"
-        randomize={false}
       />
     </main>
   );

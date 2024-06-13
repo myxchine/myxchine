@@ -17,7 +17,6 @@ interface Props {
   headerText: string;
   limit: number;
   showImage: boolean;
-  randomize: boolean; // Add new prop for randomizing
 }
 
 const SongsList: React.FC<Props> = ({
@@ -27,9 +26,8 @@ const SongsList: React.FC<Props> = ({
   addToQueue,
   headerText,
   showImage,
-  randomize, // Destructure the new prop
 }) => {
-  if (!data) {
+  if (data.length === 0) {
     return (
       <div className="mb-56 bg-transparent p-4 pt-0">
         <h2 className="text-l font-bold text-grey">{headerText}</h2>
@@ -67,7 +65,7 @@ const SongsList: React.FC<Props> = ({
   }
 
   return (
-    <div className="mb-56 bg-transparent p-4 pt-0">
+    <div className="bg-transparent p-4 pt-0">
       <h2 className="text-l font-bold text-grey">{headerText}</h2>
 
       <div className="space-y-4 py-4">

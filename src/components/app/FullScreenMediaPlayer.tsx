@@ -25,13 +25,11 @@ const FullScreenMediaPlayer = () => {
     songLoading,
     queue,
     closeFullscreen,
-    setCurrentTime,
     isFullScreen,
     play,
     pause,
     next,
     prev,
-    changeBackgroundColor,
     changeSongPoint,
   } = useMusic();
 
@@ -102,7 +100,7 @@ const FullScreenMediaPlayer = () => {
                 className="rounded w-full h-auto "
                 width={500}
                 height={500}
-                priority
+                priority={true}
                 src={queue[currentIndex].images[0].url}
                 alt={`${queue[currentIndex].name} - Album Cover`}
               />
