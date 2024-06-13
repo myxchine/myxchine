@@ -36,9 +36,11 @@ const SongsList: React.FC<Props> = ({
           {[...Array(limit).keys()].map((index) => (
             <div key={index} className="cursor-pointer">
               <div className="flex cursor-pointer items-center justify-between space-x-4 text-left">
-                <div>
-                  <div className="w-[66px] h-[66px] rounded border bg-gray-200 animate-pulse" />
-                </div>
+                {showImage && (
+                  <div>
+                    <div className="w-[66px] h-[66px] rounded border bg-gray-200 animate-pulse" />
+                  </div>
+                )}
                 <div className="z-100000 w-full text-left">
                   <h2
                     className="text-l truncate font-bold"

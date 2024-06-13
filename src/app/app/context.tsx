@@ -33,7 +33,7 @@ interface MusicContextType {
 const MusicContext = createContext<MusicContextType | undefined>(undefined);
 
 export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
-  const { user, session } = useAuth();
+  const { user } = useAuth();
 
   const [musicData, setMusicData] = useState({
     songs: null,
@@ -61,7 +61,7 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
   } = useAudioPlayer();
 
   useEffect(() => {
-    if (user && session) {
+    if (user) {
       getSongs(10)
         .then((data) => {
           setMusicData((prev) => ({ ...prev, songs: data.data }));
@@ -92,7 +92,7 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
           console.error("Error fetching playlists:", error);
         });
     }
-  }, [user, session]);
+  }, [user]);
 
   useEffect(() => {
     if (isFullScreen) {
