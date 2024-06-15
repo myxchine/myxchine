@@ -1,5 +1,15 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
+export default function Purgatory() {
+  const router = useRouter();
+  router.push("/app/home");
+}
+
+/*
+"use client";
+
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context";
@@ -11,11 +21,6 @@ export default function Purgatory() {
 
   useEffect(() => {
     const checkUserStatus = async () => {
-      if (!user) {
-        // If user data is not available yet, you might want to add a loading state
-        return;
-      }
-
       if (user.aud === "authenticated") {
         router.push("/app/home");
       } else {
@@ -36,3 +41,6 @@ export default function Purgatory() {
     </div>
   );
 }
+
+
+*/

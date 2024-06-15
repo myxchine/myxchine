@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { getSongs, getAlbums, getPlaylists } from "@/server/utils";
 import useAudioPlayer from "@/hooks/useAudioPlayer";
 import { useAuth } from "@/app/context";
@@ -34,6 +35,7 @@ const MusicContext = createContext<MusicContextType | undefined>(undefined);
 
 export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
+  const router = useRouter();
 
   const [musicData, setMusicData] = useState({
     songs: null,
@@ -61,8 +63,9 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
   } = useAudioPlayer();
 
   useEffect(() => {
+    console.log("user", user);
     if (user) {
-      getSongs(10)
+      getSongs(30)
         .then((data) => {
           setMusicData((prev) => ({ ...prev, songs: data.data }));
           setRandomSongs(
@@ -73,7 +76,7 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
           console.error("Error fetching songs:", error);
         });
 
-      getAlbums(10)
+      getAlbums(15)
         .then((data) => {
           setMusicData((prev) => ({ ...prev, albums: data.data }));
           setRandomAlbums(
@@ -86,11 +89,16 @@ export const MusicProvider = ({ children }: { children: React.ReactNode }) => {
 
       getPlaylists(10, user.id)
         .then((data) => {
+          console.log("playlists", data);
           setMusicData((prev) => ({ ...prev, playlists: data }));
         })
         .catch((error) => {
           console.error("Error fetching playlists:", error);
         });
+    }
+
+    if (!user) {
+      router.push("/signin");
     }
   }, [user]);
 

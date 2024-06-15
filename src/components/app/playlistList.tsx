@@ -18,25 +18,30 @@ interface Props {
 }
 const Home: React.FC<Props> = ({ data }) => {
   const handleCreatePlaylist = async (name: string) => {
-    if (user && session) {
-      const newPlaylist = await createPlaylist({
-        songs: [],
-        name: name,
-        userId: user.id,
-      });
-      console.log("new playlist", newPlaylist);
+    try {
+      if (user) {
+        const newPlaylist = await createPlaylist({
+          name: name,
+          userId: user.id,
+        });
+        console.log("New playlist created:", newPlaylist);
+      }
+    } catch (error) {
+      console.error("Error creating playlist:", error);
+    } finally {
+      setAdding(false);
     }
-    setAdding(false);
   };
 
   const [adding, setAdding] = useState<boolean>(false);
   const [name, setName] = useState("");
-  const { user, session } = useAuth();
+  const { user } = useAuth();
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     handleCreatePlaylist(name);
     console.log("Submitted name:", name);
   };
+
 
   if (!data) {
     return (
@@ -109,8 +114,8 @@ const Home: React.FC<Props> = ({ data }) => {
       )}
       {!adding && (
         <div className="grid grid-cols-2 gap-4">
-          {data.length > 0 &&
-            data.map((playlist, index) => (
+          {data &&
+            data.data.map((playlist, index) => (
               <div key={index} className="col-2">
                 <div className="w-full cursor-pointer items-center text-left">
                   <img

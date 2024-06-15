@@ -31,7 +31,7 @@ const Home = () => {
         data={randomSongs}
         setSong={handleSetQueue}
         addToQueue={addToQueue}
-        limit={5}
+        limit={30}
         headerText="For you"
         showImage={true}
         randomize={true}

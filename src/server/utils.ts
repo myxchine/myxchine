@@ -302,30 +302,17 @@ export const createNewAlbum = async (album: any) => {
   }
 };
 
-export const createPlaylist = async (playlist: any) => {
+export const createPlaylist = async (playlist) => {
   try {
-    const { data: existingPlaylists, error: selectError } = await db
-      .from("playlists")
-      .select("*")
-      .eq("id", playlist.id);
-
-    if (selectError) {
-      console.error("Error checking for existing playlist:", selectError);
-      throw selectError;
-    }
-
-    if (existingPlaylists && existingPlaylists.length > 0) {
-      return existingPlaylists[0];
-    }
-
     const { data: newPlaylist, error: insertError } = await db
       .from("playlists")
-      .insert({
-        id: playlist.id,
-        name: playlist.name,
-        userId: playlist.userId,
-      })
-      .single(); // This will ensure we get the inserted record back
+      .insert([
+        {
+          name: playlist.name,
+          userId: playlist.userId,
+        },
+      ])
+      .single(); // Ensures we get the inserted record back
 
     if (insertError) {
       console.error("Error creating new playlist:", insertError);
